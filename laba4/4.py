@@ -1,32 +1,33 @@
-import copy
 
-class Student:
-    def __init__(self, name, group, grades):
-        self.name = name
-        self.group = group
-        self.grades = grades
+class Report:
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
 
-    def study(self):
-        print(f"{self.name} з групи {self.group} вчиться.")
+class ReportPrinter:
+    def print(self, report: Report):
+        print(f"Звіт: {report.title}")
+        print(report.content)
 
-    def show_grades(self):
-        print(f"Оцінки {self.name}: {self.grades}")
+class Discount:
+    def get_discount(self, amount):
+        return amount
 
-    def clone(self):
-        return copy.deepcopy(self)
+class StudentDiscount(Discount):
+    def get_discount(self, amount):
+        return amount * 0.9  # 10% знижка
 
-# Головна частина програми
+class SeniorDiscount(Discount):
+    def get_discount(self, amount):
+        return amount * 0.85  # 15% знижка
+
 if __name__ == "__main__":
-    original_student = Student("Іван", "КН-21", [3, 4, 4])
-    original_student.study()
-    original_student.show_grades()
+    report = Report("Прогрес студента", "Всі завдання здані вчасно.")
+    printer = ReportPrinter()
+    printer.print(report)
 
-    # Клонування студента
-    cloned_student = original_student.clone()
-    cloned_student.name = "Олег"
-    cloned_student.group = "КН-22"
-    cloned_student.grades[0] = 5
-
-    print("\nПісля клонування:")
-    original_student.show_grades()
-    cloned_student.show_grades()
+    print("\n--- Знижки ---")
+    amount = 100
+    discounts = [StudentDiscount(), SeniorDiscount()]
+    for d in discounts:
+        print(f"Знижена ціна: {d.get_discount(amount)} грн")
