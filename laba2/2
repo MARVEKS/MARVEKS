@@ -1,0 +1,73 @@
+from abc import ABC, abstractmethod
+
+# Клас User зберігає ім'я користувача та email
+# Важливо: цей клас відповідає лише за дані користувача (SRP - Single Responsibility Principle)
+class User:
+    def __init__(self, username, email):
+        self.username = username
+        self.email = email
+
+# Клас UserRepository відповідає за зберігання та отримання користувачів
+# Важливо: чітке дотримання SRP - окрема відповідальність за зберігання
+class UserRepository:
+    def __init__(self):
+        self._users = []
+
+    def add_user(self, user):
+        self._users.append(user)
+
+    def get_all_users(self):
+        return self._users
+
+# Клас UserPrinter відповідає за виведення користувачів на екран
+# Важливо: окремий клас для виводу даних - дотримання SRP
+class UserPrinter:
+    def print_users(self, users):
+        for user in users:
+            print(f"Username: {user.username}, Email: {user.email}")
+
+# Абстрактний клас для надсилання повідомлень
+# Важливо: застосування DIP (Dependency Inversion Principle)
+class NotificationSender(ABC):
+    @abstractmethod
+    def send(self, user, message):
+        pass
+
+# Клас EmailSender реалізує інтерфейс NotificationSender
+# Важливо: застосування OCP (Open/Closed Principle) - клас можна розширювати, але не змінювати
+class EmailSender(NotificationSender):
+    def send(self, user, message):
+        print(f"Повідомлення відправлено на {user.email}: {message}")
+
+# Клас SMSSender також реалізує NotificationSender
+# Важливо: ще один приклад OCP - нова поведінка без змін в NotificationSender
+class SMSSender(NotificationSender):
+    def send(self, user, message):
+        print(f"СМС відправлено на {user.username}: {message}")
+
+# Основна функція
+# Важливо: демонстрація застосування SOLID принципів у дії
+# - різні класи мають чіткі обов'язки (SRP)
+# - NotificationSender дозволяє легко змінювати або додавати типи повідомлень (OCP)
+# - залежність будується через абстракцію (DIP)
+def main():
+    user1 = User("Іван_Мартиник", "Ivan@gmail.com")
+    user2 = User("Іван_Франко", "Franko@gmail.com")
+    repo = UserRepository()
+    repo.add_user(user1)
+    repo.add_user(user2)
+
+    printer = UserPrinter()
+    print("All users:")
+    printer.print_users(repo.get_all_users())
+
+    print("\nSending notifications:")
+    email_sender = EmailSender()
+    sms_sender = SMSSender()
+
+    for user in repo.get_all_users():
+        email_sender.send(user, "Привітання!")
+        sms_sender.send(user, "Повідомлення про виселення!")
+
+if __name__ == "__main__":
+    main()
