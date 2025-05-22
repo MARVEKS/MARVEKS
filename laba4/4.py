@@ -1,33 +1,81 @@
+# Composite Pattern
+class Component:
+    def init(self, name):
+        self.name = name
 
-class Report:
-    def __init__(self, title, content):
-        self.title = title
-        self.content = content
+    def display(self, depth=0):
+        pass
 
-class ReportPrinter:
-    def print(self, report: Report):
-        print(f"Звіт: {report.title}")
-        print(report.content)
 
-class Discount:
-    def get_discount(self, amount):
-        return amount
+class Leaf(Component):
+    def display(self, depth=0):
+        print("-" * depth + self.name)
 
-class StudentDiscount(Discount):
-    def get_discount(self, amount):
-        return amount * 0.9  # 10% знижка
 
-class SeniorDiscount(Discount):
-    def get_discount(self, amount):
-        return amount * 0.85  # 15% знижка
+class Composite(Component):
+    def init(self, name):
+        super().init(name)
+        self.children = []
 
-if __name__ == "__main__":
-    report = Report("Прогрес студента", "Всі завдання здані вчасно.")
-    printer = ReportPrinter()
-    printer.print(report)
+    def add(self, component):
+        self.children.append(component)
 
-    print("\n--- Знижки ---")
-    amount = 100
-    discounts = [StudentDiscount(), SeniorDiscount()]
-    for d in discounts:
-        print(f"Знижена ціна: {d.get_discount(amount)} грн")
+    def display(self, depth=0):
+        print("-" * depth + self.name)
+        for child in self.children:
+            child.display(depth + 2)
+
+
+# Facade Pattern, який керує Composite-структурою
+class SystemManager:
+    def init(self):
+        self.menu = self._create_menu()
+        self.computer = Computer()
+        self.lights = Lights()
+
+    def _create_menu(self):
+        root = Composite("Головне Меню")
+        root.add(Leaf("Файл"))
+        root.add(Leaf("Правка"))
+        help_menu = Composite("Допомога")
+        help_menu.add(Leaf("Документація"))
+        help_menu.add(Leaf("Про програму"))
+        root.add(help_menu)
+        return root
+
+    def start_system(self):
+        print("=== СИСТЕМА ЗАПУСКАЄТЬСЯ ===")
+        self.lights.turn_on()
+        self.computer.turn_on()
+        print("\n== Меню системи ==")
+        self.menu.display()
+
+    def shutdown_system(self):
+        print("\n=== СИСТЕМА ВИМИКАЄТЬСЯ ===")
+        self.computer.turn_off()
+        self.lights.turn_off()
+
+
+# Допоміжні класи
+class Computer:
+    def turn_on(self):
+        print("Комп'ютер увімкнено.")
+
+    def turn_off(self):
+        print("Комп'ютер вимкнено.")
+
+
+class Lights:
+    def turn_on(self):
+        print("Світло увімкнено.")
+
+    def turn_off(self):
+        print("Світло вимкнено.")
+
+
+# Головна частина
+if name == "main":
+    system = SystemManager()
+    system.start_system()
+    print("...Система працює...")
+    system.shutdown_system()
