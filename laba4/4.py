@@ -1,6 +1,5 @@
-# Composite Pattern
 class Component:
-    def init(self, name):
+    def __init__(self, name):
         self.name = name
 
     def display(self, depth=0):
@@ -13,8 +12,8 @@ class Leaf(Component):
 
 
 class Composite(Component):
-    def init(self, name):
-        super().init(name)
+    def __init__(self, name):
+        super().__init__(name)
         self.children = []
 
     def add(self, component):
@@ -26,9 +25,8 @@ class Composite(Component):
             child.display(depth + 2)
 
 
-# Facade Pattern, який керує Composite-структурою
 class SystemManager:
-    def init(self):
+    def __init__(self):
         self.menu = self._create_menu()
         self.computer = Computer()
         self.lights = Lights()
@@ -56,7 +54,6 @@ class SystemManager:
         self.lights.turn_off()
 
 
-# Допоміжні класи
 class Computer:
     def turn_on(self):
         print("Комп'ютер увімкнено.")
@@ -73,8 +70,7 @@ class Lights:
         print("Світло вимкнено.")
 
 
-# Головна частина
-if name == "main":
+if __name__ == "__main__":
     system = SystemManager()
     system.start_system()
     print("...Система працює...")
