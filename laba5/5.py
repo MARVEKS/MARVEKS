@@ -1,50 +1,58 @@
-
-class MenuComponent:
-    def show(self, indent=0):
+class Strategy:
+    def execute(self, a, b):
         pass
 
+class AddStrategy(Strategy):
+    def execute(self, a, b):
+        return a + b
 
-class MenuItem(MenuComponent):
-    def __init__(self, name):
-        self.name = name
+class MultiplyStrategy(Strategy):
+    def execute(self, a, b):
+        return a * b
 
-    def show(self, indent=0):
-        print("  " * indent + f"- {self.name}")
+class Context:
+    def __init__(self, strategy):
+        self.strategy = strategy
 
+    def set_strategy(self, strategy):
+        self.strategy = strategy
 
-class Menu(MenuComponent):
-    def __init__(self, name):
-        self.name = name
-        self.items = []
+    def execute(self, a, b):
+        return self.strategy.execute(a, b)
 
-    def add(self, component):
-        self.items.append(component)
+class State:
+    def handle(self, context, strategy_context):
+        pass
 
-    def show(self, indent=0):
-        print("  " * indent + f"[{self.name}]")
-        for item in self.items:
-            item.show(indent + 1)
+class IdleState(State):
+    def handle(self, context, strategy_context):
+        print("[IdleState] Система в очікуванні...")
+        context.set_state(ActiveState())
+        strategy_context.set_strategy(AddStrategy())
 
-class MenuSystem:
+class ActiveState(State):
+    def handle(self, context, strategy_context):
+        print("[ActiveState] Система активна. Виконуємо множення...")
+        context.set_state(IdleState())
+        strategy_context.set_strategy(MultiplyStrategy())
+
+class SystemContext:
     def __init__(self):
-        self.main_menu = Menu("Головне меню")
-        self.setup()
+        self.state = IdleState()
 
-    def setup(self):
-        file_menu = Menu("Файл")
-        file_menu.add(MenuItem("Новий"))
-        file_menu.add(MenuItem("Відкрити"))
+    def set_state(self, state):
+        self.state = state
 
-        edit_menu = Menu("Редагувати")
-        edit_menu.add(MenuItem("Копіювати"))
-        edit_menu.add(MenuItem("Вставити"))
-
-        self.main_menu.add(file_menu)
-        self.main_menu.add(edit_menu)
-
-    def show_menu(self):
-        self.main_menu.show()
+    def request(self, strategy_context):
+        self.state.handle(self, strategy_context)
 
 if __name__ == "__main__":
-    menu = MenuSystem()
-    menu.show_menu()
+    print("=== Strategy + State ===")
+    system = SystemContext()
+    strategy = Context(AddStrategy())
+
+    system.request(strategy)
+    print("Результат:", strategy.execute(5, 3))
+
+    system.request(strategy)
+    print("Результат:", strategy.execute(5, 3))
