@@ -24,8 +24,22 @@ class Composite(Component):
         for child in self.children:
             child.display(depth + 2)
 
+class Computer:
+    def turn_on(self):
+        print("Комп'ютер увімкнено.")
 
-class SystemManager:
+    def turn_off(self):
+        print("Комп'ютер вимкнено.")
+
+
+class Lights:
+    def turn_on(self):
+        print("Світло увімкнено.")
+
+    def turn_off(self):
+        print("Світло вимкнено.")
+
+class SystemFacade:
     def __init__(self):
         self.menu = self._create_menu()
         self.computer = Computer()
@@ -54,24 +68,8 @@ class SystemManager:
         self.lights.turn_off()
 
 
-class Computer:
-    def turn_on(self):
-        print("Комп'ютер увімкнено.")
-
-    def turn_off(self):
-        print("Комп'ютер вимкнено.")
-
-
-class Lights:
-    def turn_on(self):
-        print("Світло увімкнено.")
-
-    def turn_off(self):
-        print("Світло вимкнено.")
-
-
 if __name__ == "__main__":
-    system = SystemManager()
+    system = SystemFacade()
     system.start_system()
     print("...Система працює...")
     system.shutdown_system()
