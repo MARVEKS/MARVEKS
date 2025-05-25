@@ -34,8 +34,8 @@ class SMSSender(NotificationSender):
         print(f"СМС відправлено на {user.username}: {message}")
 
 def main():
-    user1 = User("Іван_Мартиник", "Ivan@gmail.com")
-    user2 = User("Іван_Франко", "Franko@gmail.com")
+    user1 = User("Іван Мартиник", "Ivan@gmail.com")
+    user2 = User("Іван Франко", "Franko@gmail.com")
     repo = UserRepository()
     repo.add_user(user1)
     repo.add_user(user2)
