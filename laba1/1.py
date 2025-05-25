@@ -1,22 +1,20 @@
 from abc import ABC, abstractmethod
 
-# Абстрактний клас Animal
 class Animal(ABC):
     def __init__(self, name):
-        self._name = name  # protected атрибут - доступний у спадкоємців
+        self._name = name 
 
     @abstractmethod
     def make_sound(self):
-        pass  # абстрактний метод — змушує нащадків реалізовувати цей метод
+        pass
 
     def info(self):
         print(f"Ім'я: {self._name}")
 
-# Клас Собака наслідує Animal
 class Собака(Animal):
     def __init__(self, name, breed):
         super().__init__(name)
-        self.__breed = breed  # приватний атрибут
+        self.__breed = breed
 
     def make_sound(self):
         print(f"{self._name} Робить: Гав!")
@@ -31,7 +29,6 @@ class Собака(Animal):
         super().info()
         print(f"Порода: {self.__breed}")
 
-# Клас Кіт також наслідує Animal
 class Кіт(Animal):
     def __init__(self, name, color):
         super().__init__(name)
@@ -50,7 +47,6 @@ class Кіт(Animal):
         super().info()
         print(f"Колір: {self.__color}")
 
-# Основна функція для демонстрації
 def main():
     dog1 = Собака("Рекс", "Німецька вівчарка")
     cat1 = Кіт("Тімон", "Білий")
@@ -58,11 +54,11 @@ def main():
     dog1.set_breed("Німецька вівчарка")
     cat1.set_color("Білий")
 
-    animals = [dog1, cat1]  # Список тварин (Animal)
+    animals = [dog1, cat1]
 
     for animal in animals:
-        animal.info()        # поліморфний виклик
-        animal.make_sound()  # поліморфний виклик
+        animal.info()
+        animal.make_sound()
         print("-----")
 
 if __name__ == "__main__":
