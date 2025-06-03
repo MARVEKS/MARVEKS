@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 
 class Animal(ABC):
     def __init__(self, name):
-        self._name = name 
+        self._name = name
 
     @abstractmethod
     def make_sound(self):
-        pass
+        pass 
 
     def info(self):
         print(f"Ім'я: {self._name}")
@@ -19,10 +19,10 @@ class Собака(Animal):
     def make_sound(self):
         print(f"{self._name} Робить: Гав!")
 
-    def get_breed(self):
+    def g_breed(self):
         return self.__breed
 
-    def set_breed(self, new_breed):
+    def s_breed(self, new_breed):
         self.__breed = new_breed
 
     def info(self):
@@ -37,10 +37,10 @@ class Кіт(Animal):
     def make_sound(self):
         print(f"{self._name} Робить: М'яв!")
 
-    def get_color(self):
+    def g_color(self):
         return self.__color
 
-    def set_color(self, new_color):
+    def s_color(self, new_color):
         self.__color = new_color
 
     def info(self):
@@ -50,15 +50,14 @@ class Кіт(Animal):
 def main():
     dog1 = Собака("Рекс", "Німецька вівчарка")
     cat1 = Кіт("Тімон", "Білий")
+    dog1.s_breed("Німецька вівчарка")
+    cat1.s_color("Білий")
 
-    dog1.set_breed("Німецька вівчарка")
-    cat1.set_color("Білий")
-
-    animals = [dog1, cat1]
+    animals = [dog1, cat1,]
 
     for animal in animals:
-        animal.info()
-        animal.make_sound()
+        animal.info()       
+        animal.make_sound() 
         print("-----")
 
 if __name__ == "__main__":
